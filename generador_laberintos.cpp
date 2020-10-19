@@ -11,6 +11,11 @@ Ejercicio individual: Laberinto
 #include <iostream>
 #define tamanio 7
 
+enum casilla{
+  suelo = 0,
+  pared = 1,
+};
+
 enum orientacion {
   horizontal,
   vertical
@@ -19,15 +24,36 @@ enum orientacion {
 using namespace std;
 
 /******************************************************************************/
-void pintaMatriz(int laberinto[][tamanio]){
-  cout << endl;
+void dibujaLaberinto(int laberinto[][tamanio]){
+  cout << "╔";
+
+  for(int i = 0; i < tamanio; i++)
+    cout << "═";
+
+  cout << "╗" << endl;
 
   for(int i = 0; i < tamanio; i++){
-    for(int j = 0; j < tamanio; j++)
-      cout << laberinto[i][j];
+    cout << "║";
+    for(int j = 0; j < tamanio; j++) {
+      switch (laberinto[i][j]) {
+        case casilla::suelo:
+          cout << " ";
+        break;
 
-    cout << endl ;
+        case casilla::pared:
+          cout << "█";
+        break;
+      }
+    }
+    cout << "║" << endl;
   }
+
+  cout << "╚";
+
+  for(int i = 0; i < tamanio; i++)
+    cout << "═";
+
+  cout << "╝";
   cout << endl;
 }
 
@@ -194,7 +220,7 @@ int main(){
   generaLaberintoRecursivo(laberinto, 0, tamanio, 0, tamanio);
   abrePuertas(laberinto);
 
-  pintaMatriz(laberinto);
+  dibujaLaberinto(laberinto);
 
   return 0;
 }
