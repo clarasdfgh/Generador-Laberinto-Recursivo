@@ -23,9 +23,9 @@ void pintaMatriz(int laberinto[][tamanio]){
   cout << endl;
 
   for(int i = 0; i < tamanio; i++){
-    for(int j = 0; j < tamanio; j++){
+    for(int j = 0; j < tamanio; j++)
       cout << laberinto[i][j];
-    }
+
     cout << endl ;
   }
   cout << endl;
@@ -33,20 +33,14 @@ void pintaMatriz(int laberinto[][tamanio]){
 
 /******************************************************************************/
 void ponParedHorizontal(int laberinto[][tamanio], int fila, int inicio, int fin){             //Dibujar pared horizontal en la fila entre las posiciones de la fila pos a y b
-  for(int i=inicio; i<fin; i++){
+  for(int i=inicio; i<fin; i++)
     laberinto[fila][i] = 1;
-  }
-
-  //pintaMatriz(laberinto);
 }
 
 /******************************************************************************/
 void ponParedVertical(int laberinto[][tamanio], int columna, int inicio, int fin){               //Dibujar pared vertical en la columna entre las posiciones de la columna pos a y b
-  for(int i=inicio; i<fin; i++){
+  for(int i=inicio; i<fin; i++)
     laberinto[i][columna] = 1;
-  }
-
-  //pintaMatriz(laberinto);
 }
 
 /******************************************************************************/
@@ -56,16 +50,13 @@ void abrePuertaEnHorizontal(int laberinto[][tamanio], int fila, int inicio, int 
 
   puerta = (rand() % (fin-inicio-1));
 
-  if(puerta % 2 != 0){
+  if(puerta % 2 != 0)
     puerta++;
-  }
 
-  if(puerta + despl >= inicio){
+  if(puerta + despl >= inicio)
     puerta -= 2;
-  }
 
   laberinto[fila][puerta + despl] = 3;
-  //pintaMatriz(laberinto);
 }
 
 /******************************************************************************/
@@ -75,16 +66,13 @@ void abrePuertaEnVertical(int laberinto[][tamanio], int columna, int inicio, int
 
   puerta = (rand() % (fin-inicio-1));
 
-  if(puerta % 2 == 0){
+  if(puerta % 2 == 0)
     puerta++;
-  }
 
-  if(puerta + despl >= fin){
+  if(puerta + despl >= fin)
     puerta -= 2;
-  }
 
   laberinto[puerta + despl][columna] = 3;
-  //pintaMatriz(laberinto);
 }
 
 /******************************************************************************/
@@ -122,29 +110,26 @@ void generaLaberintoRecursivo(int laberinto[][tamanio], int posX_izda, int posX_
     laberinto[0][0] = 3;
     laberinto[tamanio-1][tamanio-1] = 3;
 
-  } else{
+  }
+  else{
     orientacion orientacion = (escogeOrientacion(ancho, alto));
 
-    /* VERTICAL ***************************************************************/
     if(orientacion == orientacion::horizontal) {
       int posicion_pared = -1;
       int i = ancho / 2 + posX_izda;
 
       for(; posicion_pared == -1; i++){                                         //Las paredes verticales se ponen en anchuras impares en las que no haya puertas
-        if(i%2 != 0){
-          if(laberinto[i+posY_arr][posY_arr] != 3 && laberinto[i+posY_arr][posY_abj] != 3){
+        if(i%2 != 0 && laberinto[i+posY_arr][posY_arr] != 3 && laberinto[i+posY_arr][posY_abj] != 3)
             posicion_pared = i;
-          }
-        } if(i == posX_dcha){
+
+        if(i == posX_dcha)
           i = 0;
-        }
       }
 
       int despl = posX_izda + (posX_izda%2);
 
-      if(posicion_pared + despl > posX_izda){
+      if(posicion_pared + despl > posX_izda)
         posicion_pared -= 2;
-      }
 
       posicion_pared += despl;
 
@@ -155,27 +140,23 @@ void generaLaberintoRecursivo(int laberinto[][tamanio], int posX_izda, int posX_
       generaLaberintoRecursivo(laberinto, posicion_pared+1, posX_dcha, posY_arr, posY_abj);
     }
 
-    /* HORIZONTAL *************************************************************/
     if(orientacion == orientacion::vertical){
 
       int posicion_pared = -1;
       int i = alto / 2 + posY_arr;
 
       for(; posicion_pared == -1; i++){                                         //Las paredes horizontales se ponen en alturas pares en las que no haya puertas
-        if(i % 2 == 0){
-          if(laberinto[posX_izda][i+posX_izda-1] != 3 && laberinto[posX_dcha][i+posX_izda] != 3){
+        if(i % 2 == 0 && laberinto[posX_izda][i+posX_izda-1] != 3 && laberinto[posX_dcha][i+posX_izda] != 3)
             posicion_pared = i;
-          }
-        } if(i == posY_abj){
+
+        if(i == posY_abj)
           i = 0;
-        }
       }
 
       int despl = posY_arr + (posY_arr%2);
 
-      if(posicion_pared + despl > posY_abj){
+      if(posicion_pared + despl > posY_abj)
         posicion_pared -= 2;
-      }
 
       posicion_pared += despl;
 
@@ -192,9 +173,8 @@ void generaLaberintoRecursivo(int laberinto[][tamanio], int posX_izda, int posX_
 void abrePuertas(int laberinto[][tamanio]){                                           //Convierte las puertas (3) en pasillos (0)
   for(int i=0; i<tamanio; i++){
     for(int j=0; j<tamanio; j++){
-      if(laberinto[i][j] == 3){
+      if(laberinto[i][j] == 3)
         laberinto[i][j] = 0;
-      }
     }
   }
 }
@@ -207,9 +187,8 @@ int main(){
 
   //Inicializamos el laberinto vacío
   for (int i=0; i<tamanio; i++){
-    for(int j=0; j<tamanio; j++){
+    for(int j=0; j<tamanio; j++)
       laberinto[i][j] = 0;
-    }
   }
 
   generaLaberintoRecursivo(laberinto, 0, tamanio, 0, tamanio);
