@@ -9,16 +9,16 @@ Ejercicio individual: Laberinto
 *******************************************************************************/
 #include <cstdlib>
 #include <iostream>
-#define n 7
+#define tamanio 7
 
 using namespace std;
 
 /******************************************************************************/
-void pintaMatriz(int laberinto[][n]){
+void pintaMatriz(int laberinto[][tamanio]){
   cout << endl;
 
-  for(int i = 0; i < n; i++){
-    for(int j = 0; j < n; j++){
+  for(int i = 0; i < tamanio; i++){
+    for(int j = 0; j < tamanio; j++){
       cout << laberinto[i][j];
     }
     cout << endl ;
@@ -27,58 +27,58 @@ void pintaMatriz(int laberinto[][n]){
 }
 
 /******************************************************************************/
-void ponParedHorizontal(int laberinto[][n], int pos, int a, int b){             //Dibujar pared horizontal en la fila pos, entre las posiciones de la fila pos a y b
-  for(int i=a; i<b; i++){
-    laberinto[pos][i] = 1;
+void ponParedHorizontal(int laberinto[][tamanio], int fila, int inicio, int fin){             //Dibujar pared horizontal en la fila entre las posiciones de la fila pos a y b
+  for(int i=inicio; i<fin; i++){
+    laberinto[fila][i] = 1;
   }
 
   //pintaMatriz(laberinto);
 }
 
 /******************************************************************************/
-void ponParedVertical(int laberinto[][n], int pos, int a, int b){               //Dibujar pared vertical en la columna pos, entre las posiciones de la columna pos a y b
-  for(int i=a; i<b; i++){
-    laberinto[i][pos] = 1;
+void ponParedVertical(int laberinto[][tamanio], int columna, int inicio, int fin){               //Dibujar pared vertical en la columna entre las posiciones de la columna pos a y b
+  for(int i=inicio; i<fin; i++){
+    laberinto[i][columna] = 1;
   }
 
   //pintaMatriz(laberinto);
 }
 
 /******************************************************************************/
-void abrePuertaEnHorizontal(int laberinto[][n], int pos, int a, int b){         //Abrir una puerta en la fila pos entre las posiciones de la fila pos a y b
+void abrePuertaEnHorizontal(int laberinto[][tamanio], int fila, int inicio, int fin){         //Abrir una puerta en la fila entre las posiciones de la fila pos a y b
   int puerta;                                                                   //Las puertas en paredes horizontales se ponen en alturas pares
-  int despl = a + (a%2);
+  int despl = inicio + (inicio%2);
 
-  puerta = (rand() % (b-a-1));
+  puerta = (rand() % (fin-inicio-1));
 
   if(puerta % 2 != 0){
     puerta++;
   }
 
-  if(puerta + despl >= b){
+  if(puerta + despl >= inicio){
     puerta -= 2;
   }
 
-  laberinto[pos][puerta + despl] = 3;
+  laberinto[fila][puerta + despl] = 3;
   //pintaMatriz(laberinto);
 }
 
 /******************************************************************************/
-void abrePuertaEnVertical(int laberinto[][n], int pos, int a, int b){           //Abrir una puerta en la columna pos entre las posiciones de la columna pos a y b
+void abrePuertaEnVertical(int laberinto[][tamanio], int columna, int inicio, int fin){           //Abrir una puerta en la columna entre las posiciones de la columna pos a y b
   int puerta;                                                                   //Las puertas en paredes horizontales se ponen en anchuras impares
-  int despl = a + (a%2);
+  int despl = inicio + (inicio%2);
 
-  puerta = (rand() % (b-a-1));
+  puerta = (rand() % (fin-inicio-1));
 
   if(puerta % 2 == 0){
     puerta++;
   }
 
-  if(puerta + despl >= b){
+  if(puerta + despl >= fin){
     puerta -= 2;
   }
 
-  laberinto[puerta + despl][pos] = 3;
+  laberinto[puerta + despl][columna] = 3;
   //pintaMatriz(laberinto);
 }
 
@@ -93,14 +93,14 @@ int escogeOrientacion(int ancho, int alto){                                     
 }
 
 /******************************************************************************/
-void generaLaberintoRecursivo(int laberinto[][n], int posX_izda, int posX_dcha, int posY_arr, int posY_abj){
+void generaLaberintoRecursivo(int laberinto[][tamanio], int posX_izda, int posX_dcha, int posY_arr, int posY_abj){
   int ancho = posX_dcha - posX_izda;
   int alto  = posY_abj  - posY_arr;
 
-  if(ancho < 2 || alto < 2 || posX_izda < 0 || posX_dcha > n
-                           || posY_arr  < 0  || posY_abj > n){
+  if(ancho < 2 || alto < 2 || posX_izda < 0 || posX_dcha > tamanio
+                           || posY_arr  < 0  || posY_abj > tamanio){
     laberinto[0][0] = 3;
-    laberinto[n-1][n-1] = 3;
+    laberinto[tamanio-1][tamanio-1] = 3;
 
   } else{
     int orientacion = (escogeOrientacion(ancho, alto));
@@ -169,9 +169,9 @@ void generaLaberintoRecursivo(int laberinto[][n], int posX_izda, int posX_dcha, 
 }
 
 /******************************************************************************/
-void abrePuertas(int laberinto[][n]){                                           //Convierte las puertas (3) en pasillos (0)
-  for(int i=0; i<n; i++){
-    for(int j=0; j<n; j++){
+void abrePuertas(int laberinto[][tamanio]){                                           //Convierte las puertas (3) en pasillos (0)
+  for(int i=0; i<tamanio; i++){
+    for(int j=0; j<tamanio; j++){
       if(laberinto[i][j] == 3){
         laberinto[i][j] = 0;
       }
@@ -182,17 +182,17 @@ void abrePuertas(int laberinto[][n]){                                           
 /******************************************************************************/
 /******************************************************************************/
 int main(){
-  int laberinto[n][n];
+  int laberinto[tamanio][tamanio];
   srand(time(NULL));
 
   //Inicializamos el laberinto vacío
-  for (int i=0; i<n; i++){
-    for(int j=0; j<n; j++){
+  for (int i=0; i<tamanio; i++){
+    for(int j=0; j<tamanio; j++){
       laberinto[i][j] = 0;
     }
   }
 
-  generaLaberintoRecursivo(laberinto, 0, n, 0, n);
+  generaLaberintoRecursivo(laberinto, 0, tamanio, 0, tamanio);
   abrePuertas(laberinto);
 
   pintaMatriz(laberinto);
