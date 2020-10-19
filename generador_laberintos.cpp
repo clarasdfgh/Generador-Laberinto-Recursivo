@@ -11,6 +11,11 @@ Ejercicio individual: Laberinto
 #include <iostream>
 #define tamanio 7
 
+enum orientacion {
+  horizontal,
+  vertical
+};
+
 using namespace std;
 
 /******************************************************************************/
@@ -83,13 +88,28 @@ void abrePuertaEnVertical(int laberinto[][tamanio], int columna, int inicio, int
 }
 
 /******************************************************************************/
-int escogeOrientacion(int ancho, int alto){                                     //Escoger una orientacion para la siguiente pared. Favorece donde hay más espacio
-  if(ancho < alto){                                                             //1 -> vertical, 2-> horizontal
-    return 2;
-  } if (alto < ancho){
-    return 1;
-  } else
-    return (rand() % 2) + 1;
+orientacion escogeOrientacion(int ancho, int alto){                                     //Escoger una orientacion para la siguiente pared. Favorece donde hay más espacio
+  orientacion orientacion;
+
+  if (ancho > alto) {
+    orientacion = orientacion::horizontal;
+  }
+  else if (alto > ancho) {
+    orientacion = orientacion::vertical;
+  }
+  else {
+    switch (rand() % 2) {
+      case 0:
+        orientacion = orientacion::horizontal;
+      break;
+
+      case 1:
+        orientacion = orientacion::vertical;
+      break;
+    }
+  }
+
+  return orientacion;
 }
 
 /******************************************************************************/
@@ -103,10 +123,10 @@ void generaLaberintoRecursivo(int laberinto[][tamanio], int posX_izda, int posX_
     laberinto[tamanio-1][tamanio-1] = 3;
 
   } else{
-    int orientacion = (escogeOrientacion(ancho, alto));
+    orientacion orientacion = (escogeOrientacion(ancho, alto));
 
     /* VERTICAL ***************************************************************/
-    if(orientacion == 1) {
+    if(orientacion == orientacion::horizontal) {
       int posicion_pared = -1;
       int i = ancho / 2 + posX_izda;
 
@@ -136,7 +156,7 @@ void generaLaberintoRecursivo(int laberinto[][tamanio], int posX_izda, int posX_
     }
 
     /* HORIZONTAL *************************************************************/
-    if(orientacion == 2){
+    if(orientacion == orientacion::vertical){
 
       int posicion_pared = -1;
       int i = alto / 2 + posY_arr;
